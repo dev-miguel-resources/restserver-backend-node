@@ -19,13 +19,23 @@ const orderRoutes = require("./routes/order");*/
 // app - express
 const app = express();
 
-// db
-mongoose
-    .connect(process.env.DATABASE, {
-        useNewUrlParser: true,
-        useCreateIndex: true
-    })
-    .then(() => console.log("DB Connected"));
+// modern connection
+const db = async () => {
+    try {
+        const success = await mongoose.connect(process.env.DATABASE, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+            useCreateIndex: true, 
+            useFindAndModify: false
+        });
+        console.log('DB Connected');
+    } catch (error) {
+        console.log('DB Connection Error', error);
+    }
+}
+
+// execute db connection
+db();
 
 // middlewares
 app.use(morgan("dev"));
@@ -49,3 +59,4 @@ const port = process.env.PORT || 8000;
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
+
