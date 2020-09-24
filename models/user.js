@@ -56,7 +56,7 @@ userSchema.methods = {
     },
 
     encryptPassword: function(password) {
-        if(!password) return "";
+        if (!password) return "";
         try {
             return crypto
                 .createHmac("sha1", this.salt)
