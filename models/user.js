@@ -21,7 +21,7 @@ const userSchema = new mongoose.Schema(
             required: true
         },
         about: {
-            type: String, 
+            type: String,
             trim: true
         },
         salt: String,
@@ -37,7 +37,7 @@ const userSchema = new mongoose.Schema(
     { timestamps: true }
 );
 
-// control virtuals field
+// virtual field
 userSchema
     .virtual("password")
     .set(function(password) {
