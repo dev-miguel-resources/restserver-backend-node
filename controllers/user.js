@@ -1,8 +1,9 @@
 const User = require("../models/user");
-const { Order }  = require("../models/order");
+const { Order } = require("../models/order");
 const { errorHandler } = require("../helpers/dbErrorHandler");
 
-// middlewares rest
+// middlewares rest 
+
 exports.userById = (req, res, next, id) => {
     User.findById(id).exec((err, user) => {
         if (err || !user) {
@@ -48,7 +49,7 @@ exports.addOrderToUserHistory = (req, res, next) => {
             name: item.name,
             description: item.description,
             category: item.category,
-            quantity: item.quantity,
+            quantity: item.count,
             transaction_id: req.body.order.transaction_id,
             amount: req.body.order.amount
         });

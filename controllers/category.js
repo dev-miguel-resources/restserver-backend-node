@@ -2,6 +2,7 @@ const Category = require("../models/category");
 const { errorHandler } = require("../helpers/dbErrorHandler");
 
 // middlewares rest
+
 exports.categoryByid = (req, res, next, id) => {
     Category.findById(id).exec((err, category) => {
         if (err || !category) {
