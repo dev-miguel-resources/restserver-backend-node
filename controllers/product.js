@@ -135,17 +135,17 @@ exports.update = (req, res) => {
     });
 };
 
-/** 
+/**
  * sell / arrival
  * by sell = /products?sortBy=sold&order=desc&limit=4
  * by arrival = /products?sortBy=createdAt&order=desc&limit=4
- * if no params are sent, then all products are returned 
-*/
+ * if no params are sent, then all products are returned
+ */
 
 exports.list = (req, res) => {
     let order = req.query.order ? req.query.order : "asc";
     let sortBy = req.query.sortBy ? req.query.sortBy : "_id";
-    let limit  = req.query.limit ? parseInt(req.query.limit) : 6;
+    let limit = req.query.limit ? parseInt(req.query.limit) : 6;
 
     Product.find()
         .select("-photo")
@@ -181,7 +181,7 @@ exports.listRelated = (req, res) => {
             }
             res.json(products);
         });
-}; 
+};
 
 exports.listCategories = (req, res) => {
     Product.distinct("category", {}, (err, categories) => {
@@ -209,15 +209,18 @@ exports.listBySearch = (req, res) => {
     let skip = parseInt(req.body.skip);
     let findArgs = {};
 
+    // console.log(order, sortBy, limit, skip, req.body.filters);
+    // console.log("findArgs", findArgs);
+
     for (let key in req.body.filters) {
         if (req.body.filters[key].length > 0) {
             if (key === "price") {
-               // $gte - greather than price [0-10]
-               // $lte - less than
-               findArgs[key] = {
+                // gte -  greater than price [0-10]
+                // lte - less than
+                findArgs[key] = {
                     $gte: req.body.filters[key][0],
                     $lte: req.body.filters[key][1]
-               }; 
+                };
             } else {
                 findArgs[key] = req.body.filters[key];
             }
@@ -257,7 +260,7 @@ exports.listSearch = (req, res) => {
     // assign search value to query.name
     if (req.query.search) {
         query.name = { $regex: req.query.search, $options: "i" };
-        //assigne category value to query.category
+        // assigne category value to query.category
         if (req.query.category && req.query.category != "All") {
             query.category = req.query.category;
         }
@@ -278,7 +281,7 @@ exports.decreaseQuantity = (req, res, next) => {
     let bulkOps = req.body.order.products.map(item => {
         return {
             updateOne: {
-                filter: { _id: item._id},
+                filter: { _id: item._id },
                 update: { $inc: { quantity: -item.count, sold: +item.count } }
             }
         };
